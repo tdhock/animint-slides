@@ -1,0 +1,144 @@
+\documentclass{beamer}
+
+\usepackage{listings}
+\usepackage{slashbox}
+\usepackage{tikz}
+\usepackage{booktabs}
+\usepackage{amsmath,amssymb}
+\usepackage{hyperref}
+\usepackage{graphicx}
+
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\maximize}{maximize}
+\DeclareMathOperator*{\minimize}{minimize}
+\newcommand{\sign}{\operatorname{sign}}
+\newcommand{\RR}{\mathbb R}
+\newcommand{\NN}{\mathbb N}
+
+% Set transparency of non-highlighted sections in the table of
+% contents slide.
+\setbeamertemplate{section in toc shaded}[default][100]
+\AtBeginSection[]
+{
+  \setbeamercolor{section in toc}{fg=red} 
+  \setbeamercolor{section in toc shaded}{fg=black} 
+  \begin{frame}
+    \tableofcontents[currentsection]
+  \end{frame}
+}
+
+\begin{document}
+
+\title{Interactive, animated web graphics using the animint package}
+\author{
+Toby Dylan Hocking\\
+joint work with Susan VanderPlas
+}
+
+\date{28 January 2014}
+
+\maketitle
+
+\begin{frame}
+  \frametitle{animint renders interactive, animated web graphics}
+  \url{http://github.com/tdhock/animint}
+  \begin{itemize}
+  \item Motivation: high-dimensional time series (several linked plots).
+  \item User writes only R code (a list of ggplots).
+  \item animint exports/converts to csv/json/html/Javascript files.
+  \item Rendered in a web browser using the D3 Javascript library.\\
+    Bostock et al 2011. D3 data-driven documents. IEEE Transactions on
+    Visualization and Computer Graphics.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{animint adds clicksSelects and showSelected aesthetics
+    to ggplot2}
+  ggplot2 aesthetics map data variables to visual properties:
+  \begin{description}
+  \item[x] horizontal position.
+  \item[y] vertical position.
+  \item[color] of lines/points.
+  \item[size] thickness/width of lines/points.
+  \item[showSelected] only show the selected data subset.
+  \item[clickSelects] clicking changes the selected value.
+  \end{description}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Demo code: a named list of ggplots with clickSelects and
+    showSelected aesthetics}
+\begin{verbatim}
+library(animint)
+TimeSeries <- ggplot()+
+  geom_line(aes(showSelected=variable))+
+  ...
+Scatter <- ggplot()+
+  geom_point(aes(clickSelects=variable))+
+  ...
+PlotList <- list(series=TimeSeries, scatter=Scatter)
+gg2animint(PlotList)
+\end{verbatim}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Comparison of packages that can make a multi-plot
+    animation of WorldBank/Gapminder data}
+\url{https://github.com/tdhock/interactive-tutorial/tree/master/animation}
+%\url{http://sugiyama-www.cs.titech.ac.jp/~toby/animint/WorldBank/viz.html}
+\vskip 1cm
+  \begin{tabular}{ccccc}
+    Package & years & interaction vars & programming & lines of R code \\
+    \hline
+    tcltk & 1991- & several & object & 100s \\
+    animation & 2007- & 1 = time & imperative & 40 \\
+    shiny & 2012- & several & reactive & 60 \\
+    animint & 2013- & several & declarative & 20 
+  \end{tabular}
+  \vskip 1cm
+  Points in common:
+  \begin{itemize}
+  \item Click to show/hide subsets of data.
+  \item Animation.
+  \item Multi-layer (e.g. points and lines).
+  \item Write only R code (not JavaScript).
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Limitations, future work}
+  \begin{itemize}
+  \item Only interactivity is show/hide data subsets.
+  \item Does not support zooming, brushing multiple data, annotation.
+  \item Large data sets are slow (when $>10,000$ points onscreen).
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Thank you!}
+  Supplementary slides appear after this one.
+\end{frame}
+
+\begin{frame}
+  \frametitle{Google Summer of Code}
+Student gets \$5000 for writing open source code for
+    3 months.
+    \begin{description}
+    \item[March] Admins (such as myself) for open source organizations
+      e.g. R, Bioconductor apply to Google.
+    \item[April] Mentors suggest projects for each org.
+    \item[May] Students submit project proposals to Google.
+    \item Mentors rank student/project proposals.
+    \item Google gives $n$ students to an org.
+    \item[June]The top $n$ students get \$500 and begin coding.
+    \item[August] Midterm evaluation, pass = \$2250.
+    \item[September] Final evaluation, pass = \$2250.
+    \item[November] Orgs get \$500/student mentored.
+    \end{description}
+    We can be \textbf{mentors} (get code written) and
+    \textbf{students} (get paid).
+\end{frame}
+
+\end{document}

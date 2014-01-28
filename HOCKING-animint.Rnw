@@ -1,5 +1,9 @@
 \documentclass{beamer}
 
+<<echo=FALSE>>=
+opts_chunk$set(tidy=FALSE, eval=FALSE)
+@ 
+
 \usepackage{listings}
 \usepackage{slashbox}
 \usepackage{tikz}
@@ -62,16 +66,17 @@ joint work with Susan VanderPlas
   \item[y] vertical position.
   \item[color] of lines/points.
   \item[size] thickness/width of lines/points.
-  \item[showSelected] only show the selected data subset.
   \item[clickSelects] clicking changes the selected value.
+  \item[showSelected] only show the selected data subset.
+  \item[showSelected2, showSelected3] for use with several variables.
   \end{description}
 \end{frame}
 
 \begin{frame}[fragile]
   \frametitle{Demo code: a named list of ggplots with clickSelects and
     showSelected aesthetics}
-\begin{verbatim}
-library(animint)
+<<>>=
+library(ggplot2)
 TimeSeries <- ggplot()+
   geom_line(aes(showSelected=variable))+
   ...
@@ -79,8 +84,30 @@ Scatter <- ggplot()+
   geom_point(aes(clickSelects=variable))+
   ...
 PlotList <- list(series=TimeSeries, scatter=Scatter)
+library(animint)
 gg2animint(PlotList)
-\end{verbatim}
+@ 
+\end{frame}
+
+\begin{frame}
+  \frametitle{make\_ shortcuts for interactive geoms}
+  \begin{description}
+  \item[\texttt{make\_bar(data, "var")}] Clickable bars with height=count of
+    each value of var.
+<<>>=
+aes(clickSelects=var)
+@ 
+  \item[\texttt{make\_tallrect(data, "var")}] Clickable vertical bars for each
+    value of var. 
+<<>>=
+aes(clickSelects=var)
+@ 
+  \item[\texttt{make\_text(data, x, y, "var", format)}] 
+    Text with the selected \texttt{sprintf(format, value)}.
+<<>>=
+aes(showSelected=var)
+@ 
+  \end{description}
 \end{frame}
 
 \begin{frame}
@@ -88,7 +115,7 @@ gg2animint(PlotList)
     animation of WorldBank/Gapminder data}
 \url{https://github.com/tdhock/interactive-tutorial/tree/master/animation}
 %\url{http://sugiyama-www.cs.titech.ac.jp/~toby/animint/WorldBank/viz.html}
-\vskip 1cm
+\vskip 0.5cm
   \begin{tabular}{ccccc}
     Package & years & interaction vars & programming & lines of R code \\
     \hline
@@ -97,12 +124,13 @@ gg2animint(PlotList)
     shiny & 2012- & several & reactive & 60 \\
     animint & 2013- & several & declarative & 20 
   \end{tabular}
-  \vskip 1cm
+  \vskip 0.5cm
   Points in common:
   \begin{itemize}
+  \item Multiple linked plots.
+  \item Multiple layers (e.g. points and lines) per plot.
   \item Click to show/hide subsets of data.
   \item Animation.
-  \item Multi-layer (e.g. points and lines).
   \item Write only R code (not JavaScript).
   \end{itemize}
 \end{frame}

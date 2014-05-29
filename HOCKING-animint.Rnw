@@ -138,9 +138,25 @@ aes(showSelected=var)
 \begin{frame}
   \frametitle{Limitations, future work}
   \begin{itemize}
-  \item Only interactivity is show/hide data subsets.
-  \item Does not support zooming, brushing multiple data, annotation.
-  \item Large data sets are slow (when $>10,000$ points onscreen).
+  \item Only interactivity is 
+    \begin{itemize}
+    \item show/hide data subsets (showSelected), and
+    \item highlight the current selection (clickSelects).
+    \end{itemize}
+  \item Contributions welcome: would be nice to support 
+    \begin{itemize}
+    \item aes(tooltip),
+    \item aes(hoverSelects),
+    \item zooming,
+    \item selecting multiple data points,
+    \item annotation.
+    \end{itemize}
+  \item Large data sets are slow to
+    \begin{itemize}
+    \item compile, when there are many more data subsets than you
+      will ever look at.
+    \item render, when $>10,000$ points onscreen.
+    \end{itemize}
   \end{itemize}
 \end{frame}
 
